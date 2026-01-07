@@ -5,6 +5,7 @@
 VERSION="1.0.X"  # Change this each time
 
 # --- IN DEVELOPMENT REPO (xcframework) ---
+./gradlew clean
 ./gradlew :composeApp:assembleComposeAppReleaseXCFramework
 cd composeApp/build/XCFrameworks/release
 zip -r ComposeApp.xcframework.zip ComposeApp.xcframework
