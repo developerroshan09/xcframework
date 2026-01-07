@@ -73,57 +73,24 @@ dependencies {
 }
 
 // Publishing configuration
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/developerroshan09/xcframework")
-            credentials {
-                username = System.getenv("GITHUB_USERNAME") ?: ""
-                password = System.getenv("GITHUB_TOKEN") ?: ""
-            }
-        }
-    }
-
-    publications {
-        withType<MavenPublication> {
-            groupId = "com.developerroshan"
-            version = "1.1.0"
-
-            pom {
-                name.set("ComposeApp")
-                description.set("Kotlin Multiplatform Compose library")
-                url.set("https://github.com/developerroshan09/xcframework")
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id.set("developerroshan09")
-                        name.set("Roshan Bade")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/developerroshan09/xcframework.git")
-                    developerConnection.set("scm:git:ssh://github.com/developerroshan09/xcframework.git")
-                    url.set("https://github.com/developerroshan09/xcframework")
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/developerroshan09/xcframework")
+                credentials {
+                    username = System.getenv("GITHUB_USERNAME") ?: ""
+                    password = System.getenv("GITHUB_TOKEN") ?: ""
                 }
             }
         }
 
-        // Filter out iOS publications - they should use XCFramework/SPM instead
-        matching { it.name.contains("ios", ignoreCase = true) }.all {
-            // Don't publish iOS targets to Maven
-            tasks.withType<PublishToMavenRepository>().matching {
-                it.publication == this
-            }.configureEach {
-                enabled = false
+        publications {
+            withType<MavenPublication> {
+                // CRITICAL: groupId must match GitHub org/user
+                groupId = "com.github.developerroshan09"
+                version = "1.1.0"
             }
         }
     }
